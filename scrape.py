@@ -4,9 +4,10 @@ import pickle
 from wordcloud import WordCloud
 from matplotlib import pyplot as plt
 
-# Some relevant links about beautiful soup:
+# Some relevant links about beautiful soup and word clouds:
 # https://teracrawler.io/blog/scraping-meetup-events-with-python-and-beautiful.php
 # https://realpython.com/beautiful-soup-web-scraper-python/#explore-the-website
+# https://www.analyticsvidhya.com/blog/2021/05/how-to-build-word-cloud-in-python/
 
 # for getting more events, we would have to use selenium, see
 # https://stackoverflow.com/questions/21006940/how-to-load-all-entries-in-an-infinite-scroll-at-once-to-parse-the-html-in-pytho
