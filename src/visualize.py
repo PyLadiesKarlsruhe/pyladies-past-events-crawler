@@ -8,7 +8,6 @@ from collections import Counter
 from typing import Dict, List
 
 import nltk
-import numpy as np
 from matplotlib import pyplot as plt
 from nltk import ngrams
 from nltk.corpus import stopwords
@@ -43,13 +42,26 @@ def build_and_show_wordcloud(events_dict: Dict, city_to_plot: str) -> None:
 def build_and_show_mutiple_wordclouds(events_dict: Dict,
                                       list_of_cities_to_plot: List):
     """
-    Show 4 subplots of wordclouds together (TODO)
+    Show 4 subplots of wordclouds together
+    Possible TODO: 2x2 plots & random color maps & img size
 
     :param events_dict:
     :param list_of_cities_to_plot:
     :return:
     """
-    pass
+
+    fig, axs = plt.subplots(1, 4, figsize=(10, 5))
+    for ax, city in zip(axs, list_of_cities_to_plot):
+        text = events_dict[city]
+        wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
+                              background_color="white").generate(text)
+        ax.imshow(wordcloud, interpolation="bilinear")
+        # ax.set_aspect(2)
+        ax.set_title(city.capitalize())
+        ax.axis("off")
+        ax.grid(True)
+
+    plt.show()
 
 
 def get_top_x_ngrams(events_dict: Dict, top_x: int, city_to_plot: str, most_common_x: int) -> None:
@@ -79,6 +91,11 @@ if __name__ == "__main__":
     with open("../data/events_dict.pickle", "rb") as handle:
         events_dict_from_disk = pickle.load(handle)
 
-    build_and_show_wordcloud(events_dict_from_disk, city_to_plot="Hamburg")
+    # build_and_show_wordcloud(events_dict_from_disk, city_to_plot="Hamburg")
 
-    get_top_x_ngrams(events_dict_from_disk, top_x=2, city_to_plot="Hamburg", most_common_x=20)
+    # get_top_x_ngrams(events_dict_from_disk, top_x=2, city_to_plot="Hamburg", most_common_x=20)
+
+    build_and_show_mutiple_wordclouds(events_dict_from_disk, ["Karlsruhe",
+                                                              "Berlin",
+                                                              "Hamburg",
+                                                              "Munich"])
