@@ -2,31 +2,83 @@
 The text visualization module. Builds wordcloud from the scraped dict of the meetup site
 Might be extended by other visualizations
 """
+import logging
 import pickle
+from collections import Counter
+from typing import Dict, List
+
+import nltk
+import numpy as np
 from matplotlib import pyplot as plt
+from nltk import ngrams
+from nltk.corpus import stopwords
 from wordcloud import WordCloud, STOPWORDS
 
+from utils.get_logger import get_logger
+from utils.text_helpers import _nltk_prep
 
-def build_and_show_wordcloud(city_to_plot: str):
+logger: logging.Logger = get_logger()
+
+CUSTOM_STOPWORDS = ["PyLadies", "Python", "will", "Meetup", "https", "event",
+                    "Berlin", "Karlsruhe", "Munich", "Hamburg"] + list(STOPWORDS)
+
+
+def build_and_show_wordcloud(events_dict: Dict, city_to_plot: str) -> None:
     """
 
     :param city_to_plot:
     :return:
     """
-    with open("../data/events_dict.pickle", "rb") as handle:
-        events_dict = pickle.load(handle)
-
     # creating wordcloud
     text = events_dict[city_to_plot]
-    stopwords_extended = ["PyLadies", "Python", "will",
-                          "Meetup", "https", "event",
-                          "Berlin", "Karlsruhe", "Munich", "Hamburg"] + list(STOPWORDS)
-    wordcloud = WordCloud(stopwords=stopwords_extended,
-        collocations=False, background_color="white").generate(text)
+    wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
+                          background_color="white").generate(text)
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
-    plt.show()
+    plt.show(block=False)
+    plt.pause(5)
+    plt.close()
+
+
+def build_and_show_mutiple_wordclouds(events_dict: Dict,
+                                      list_of_cities_to_plot: List):
+    """
+    Show 4 subplots of wordclouds together (TODO)
+
+    :param events_dict:
+    :param list_of_cities_to_plot:
+    :return:
+    """
+    pass
+
+
+def get_top_x_ngrams(events_dict: Dict, top_x: int, city_to_plot: str, most_common_x: int) -> None:
+    """
+
+    :param top_x:
+    :param city_to_plot:
+    :return:
+    """
+    # prepare nltk for usage
+    _nltk_prep()
+    # Further nltk prep
+    words_per_city = events_dict[city_to_plot]
+    tokens = nltk.word_tokenize(words_per_city)
+    # Remove punctuation
+    tokens = [word.lower() for word in tokens if word.isalpha()]
+    # Remove stopwords
+    filtered_words = [word for word in tokens if word not in stopwords.words('english')]
+    created_ngrams = ngrams(filtered_words, top_x)
+    # Count the occurences of most common ngrams
+    most_common_counts = Counter(created_ngrams).most_common(most_common_x)
+    for count in most_common_counts:
+        logger.info("Most common combinations %s for %s", count, city_to_plot)
 
 
 if __name__ == "__main__":
-    build_and_show_wordcloud("Karlsruhe")
+    with open("../data/events_dict.pickle", "rb") as handle:
+        events_dict_from_disk = pickle.load(handle)
+
+    build_and_show_wordcloud(events_dict_from_disk, city_to_plot="Hamburg")
+
+    get_top_x_ngrams(events_dict_from_disk, top_x=2, city_to_plot="Hamburg", most_common_x=20)

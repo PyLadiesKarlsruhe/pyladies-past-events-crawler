@@ -35,7 +35,8 @@ def get_event_texts(group_name: str,
     Get texts (consisting of title + description) of the first meetup events
     listed in url
 
-    :param url: str containing the url to scrape (pointing to past events of the respective Meetup group)
+    :param url: str containing the url to scrape
+        (pointing to past events of the respective Meetup group)
     :param headers: headers needed for the request
     :return:
     """
