@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+matplotlib = "3.4.3"
+wordcloud = "1.8.1"
+beautifulsoup4 = "4.10.0"
+numpy="1.21.2"
+requests="2.26.0"
+lxml="4.6.3"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
