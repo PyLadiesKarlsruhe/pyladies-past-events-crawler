@@ -18,7 +18,7 @@ from utils.text_helpers import _nltk_prep
 
 logger: logging.Logger = get_logger()
 
-CUSTOM_STOPWORDS = ["PyLadies", "Python", "will", "Meetup", "https", "event",
+CUSTOM_STOPWORDS = ["will", "Meetup", "https", "event", "harassment",
                     "Berlin", "Karlsruhe", "Munich", "Hamburg"] + list(STOPWORDS)
 
 
@@ -50,11 +50,12 @@ def build_and_show_mutiple_wordclouds(events_dict: Dict,
     :return:
     """
 
-    fig, axs = plt.subplots(1, 4, figsize=(10, 5))
-    for ax, city in zip(axs, list_of_cities_to_plot):
+    fig, axs = plt.subplots(2, 2, figsize=(10, 5))
+
+    for ax, city in zip(axs.reshape(-1), list_of_cities_to_plot):
         text = events_dict[city]
         wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
-                              background_color="white").generate(text)
+                              background_color="white", max_words = 40).generate(text)
         ax.imshow(wordcloud, interpolation="bilinear")
         # ax.set_aspect(2)
         ax.set_title(city.capitalize())
