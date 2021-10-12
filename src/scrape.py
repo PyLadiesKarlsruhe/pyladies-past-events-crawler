@@ -57,6 +57,7 @@ def get_event_texts(group_name: str,
             logger.warning(event_soup.select(".event-description"))
     return text_str
 
+
 def get_events_dict() -> Dict:
     """
     Gets the events text per meetup group and saves them to a dictionary

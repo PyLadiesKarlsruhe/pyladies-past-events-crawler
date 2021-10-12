@@ -32,11 +32,10 @@ def build_and_show_wordcloud(events_dict: Dict, city_to_plot: str) -> None:
     text = events_dict[city_to_plot]
     wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
                           background_color="white").generate(text)
+    plt.title(city_to_plot)
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
-    plt.show(block=False)
-    plt.pause(5)
-    plt.close()
+    plt.show()
 
 
 def build_and_show_mutiple_wordclouds(events_dict: Dict,
@@ -57,7 +56,6 @@ def build_and_show_mutiple_wordclouds(events_dict: Dict,
         wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
                               background_color="white", max_words = 40).generate(text)
         ax.imshow(wordcloud, interpolation="bilinear")
-        # ax.set_aspect(2)
         ax.set_title(city.capitalize())
         ax.axis("off")
         ax.grid(True)
