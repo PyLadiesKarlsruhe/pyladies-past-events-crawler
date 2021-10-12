@@ -82,7 +82,7 @@ def main() -> None:
     """
     events_dict = get_events_dict()
     # saving and loading
-    with open("data/events_dict.pickle", "wb") as handle:
+    with open("../data/events_dict.pickle", "wb") as handle:
         pickle.dump(events_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
