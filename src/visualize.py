@@ -30,13 +30,12 @@ def build_and_show_wordcloud(events_dict: Dict, city_to_plot: str) -> None:
     """
     # creating wordcloud
     text = events_dict[city_to_plot]
-    wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
+    wordcloud = WordCloud(stopwords=STOPWORDS, collocations=False,
                           background_color="white").generate(text)
+    plt.title(city_to_plot)
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
-    plt.show(block=False)
-    plt.pause(5)
-    plt.close()
+    plt.show()
 
 
 def build_and_show_mutiple_wordclouds(events_dict: Dict,
@@ -53,10 +52,9 @@ def build_and_show_mutiple_wordclouds(events_dict: Dict,
     fig, axs = plt.subplots(1, 4, figsize=(10, 5))
     for ax, city in zip(axs, list_of_cities_to_plot):
         text = events_dict[city]
-        wordcloud = WordCloud(stopwords=CUSTOM_STOPWORDS, collocations=False,
-                              background_color="white").generate(text)
+        wordcloud = WordCloud(stopwords=STOPWORDS, collocations=False,
+                              background_color="white", max_words=50).generate(text)
         ax.imshow(wordcloud, interpolation="bilinear")
-        # ax.set_aspect(2)
         ax.set_title(city.capitalize())
         ax.axis("off")
         ax.grid(True)
@@ -91,11 +89,11 @@ if __name__ == "__main__":
     with open("../data/events_dict.pickle", "rb") as handle:
         events_dict_from_disk = pickle.load(handle)
 
-    # build_and_show_wordcloud(events_dict_from_disk, city_to_plot="Hamburg")
+    build_and_show_wordcloud(events_dict_from_disk, city_to_plot="Berlin")
 
     # get_top_x_ngrams(events_dict_from_disk, top_x=2, city_to_plot="Hamburg", most_common_x=20)
 
-    build_and_show_mutiple_wordclouds(events_dict_from_disk, ["Karlsruhe",
-                                                              "Berlin",
-                                                              "Hamburg",
-                                                              "Munich"])
+    # build_and_show_mutiple_wordclouds(events_dict_from_disk, ["Karlsruhe",
+    #                                                           "Berlin",
+    #                                                           "Hamburg",
+    #                                                           "Munich"])

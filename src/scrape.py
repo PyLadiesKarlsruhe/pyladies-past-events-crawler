@@ -57,6 +57,7 @@ def get_event_texts(group_name: str,
             logger.warning(event_soup.select(".event-description"))
     return text_str
 
+
 def get_events_dict() -> Dict:
     """
     Gets the events text per meetup group and saves them to a dictionary
@@ -82,7 +83,7 @@ def main() -> None:
     """
     events_dict = get_events_dict()
     # saving and loading
-    with open("data/events_dict.pickle", "wb") as handle:
+    with open("../data/events_dict.pickle", "wb") as handle:
         pickle.dump(events_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
